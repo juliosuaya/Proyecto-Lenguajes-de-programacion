@@ -1,6 +1,20 @@
 class Prop {
 
-    randomProp(rng, vars, maxHeight, minHeight) { }
+    static randomProp(rng, vars, maxHeight, minHeight) { 
+        switch(Math.round(rng()*4)) {
+            case 0:
+                return Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            case 1:
+                return Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            case 2:
+                return Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            case 3:
+                return Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            default:
+                return Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+    }
 
     evalProp(prop, value) {
         return prop.evaluate(value);
@@ -16,6 +30,18 @@ class Variable extends Prop {
         super();
         this.name = varName;
     }
+    static randomProp(rng, vars, maxHeight, minHeight) {
+        if (minHeight <= 1) {
+            const randomNum = Math.round(rng()*Object.keys(vars).length)
+            const value = Object.keys(vars)[randomNum]
+
+            return new Variable(value);
+        }
+        else {
+            return Prop.randomProp(rng, vars, maxHeight, minHeight);
+        }
+    }
+
     evaluate(value) {
         return value[this.name];
     }
@@ -32,8 +58,56 @@ class Conjunction extends Prop {
         this.right = rightProp;
     }
 
-    randomProp(rng, vars, maxHeight, minHeight) { //podria ser estatico segun Val.
+    static randomProp(rng, vars, maxHeight, minHeight) { 
+        var left, right;
+        if (maxHeight <= 1) {
+            left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            return new Conjunction(left, right);
+        }
 
+        switch(Math.round(rng()*5)) {
+            case 0:
+                left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                left = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                left = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                left = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                left = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+
+        switch(Math.round(rng()*5)) {
+            case 0:
+                right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                right = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                right = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                right = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                right = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+        return new Conjunction(left, right);
     }
 
     evaluate(value) {
@@ -48,11 +122,12 @@ class Negation extends Prop {
     val = null;
 
     constructor(value) {
+        super();
         this.val = value;
     }
 
-    randomProp(rng, vars, maxHeight, minHeight) {
-
+    static randomProp(rng, vars, maxHeight, minHeight) {
+        return new Negation(Prop.randomProp(rng, vars, maxHeight -1, minHeight - 1));
     }
 
     evaluate(value) {
@@ -72,8 +147,57 @@ class Disjunction extends Prop {
         this.right = rightProp;
     }
 
-    randomProp(rng, vars, maxHeight, minHeight) {
+    static randomProp(rng, vars, maxHeight, minHeight) { 
+        
+        var left, right;
+        if (maxHeight <= 1) {
+            left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            return new Disjunction(left, right);
+        }
 
+        switch(Math.round(rng()*5)) {
+            case 0:
+                left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                left = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                left = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                left = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                left = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+
+        switch(Math.round(rng()*5)) {
+            case 0:
+                right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                right = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                right = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                right = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                right = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+        return new Disjunction(left, right);
     }
 
     evaluate(value) {
@@ -94,8 +218,58 @@ class Conditional extends Prop {
         this.right = rightProp;
     }
 
-    randomProp(rng, vars, maxHeight, minHeight) {
+    static randomProp(rng, vars, maxHeight, minHeight) { 
+        
+        var left, right;
+        if (maxHeight <= 1) {
+            left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            return new Conditional(left, right);
+        }
 
+
+        switch(Math.round(rng()*5)) {
+            case 0:
+                left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                left = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                left = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                left = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                left = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+
+        switch(Math.round(rng()*5)) {
+            case 0:
+                right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                right = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                right = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                right = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                right = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+        return new Conditional(left, right);
     }
 
     evaluate(value) {
@@ -116,8 +290,56 @@ class Biconditional extends Prop {
         this.right = rightProp;
     }
 
-    randomProp(rng, vars, maxHeight, minHeight) {
+    static randomProp(rng, vars, maxHeight, minHeight) { 
+        
+        var left, right;
+        if (maxHeight <= 1) {
+            left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+            return new Biconditional(left, right);
+        }
+        switch(Math.round(rng()*5)) {
+            case 0:
+                left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                left = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                left = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                left = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                left = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
 
+        }
+
+        switch(Math.round(rng()*5)) {
+            case 0:
+                right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 1:
+                right = Negation.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 2:
+                right = Disjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 3:
+                right = Conditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            case 4:
+                right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+                break;
+            default:
+                right = Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
+
+        }
+        return new Biconditional(left, right);
     }
 
     evaluate(value) {
