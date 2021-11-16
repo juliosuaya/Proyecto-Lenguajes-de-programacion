@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/juliosuaya/Proyecto-Lenguajes-de-programacion/issues"
   },
-  "homepage": "https://github.com/juliosuaya/Proyecto-Lenguajes-de-programacion#readme"
+  "homepage": "https://github.com/juliosuaya/Proyecto-Lenguajes-de-programacion#readme",
+  "dependencies": {
+    "seedrandom": "^3.0.5"
+  }
 }
