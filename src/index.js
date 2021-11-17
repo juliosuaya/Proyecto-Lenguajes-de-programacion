@@ -23,5 +23,6 @@ console.log(props.evalProp(randomProp, value));
 // Pruebas para el truthTable
 console.log("\nPRUEBAS DE truthTable");
 const vars_p = ["p"];
+const vars_t = ["p", "q", "t"];
 console.log(props.truthTable(new Variable("p"), vars_p));
-console.log(props.truthTable(and,vars))
+console.log(props.truthTable(and,vars_t))
