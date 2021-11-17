@@ -1,7 +1,7 @@
 class Prop {
 
-    static randomProp(rng, vars, maxHeight, minHeight) { 
-        switch(Math.round(rng()*4)) {
+    static randomProp(rng, vars, maxHeight, minHeight) {
+        switch (Math.round(rng() * 4)) {
             case 0:
                 return Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             case 1:
@@ -20,7 +20,9 @@ class Prop {
         return prop.evaluate(value);
     }
 
-    truthTable(prop, vars) { }
+    truthTable(prop, vars) {
+        return prop.truthTable(vars);
+    }
 }
 
 class Variable extends Prop {
@@ -32,8 +34,8 @@ class Variable extends Prop {
     }
     static randomProp(rng, vars, maxHeight, minHeight) {
         if (minHeight <= 1) {
-            const randomNum = Math.round(rng()*Object.keys(vars).length)
-            const value = Object.keys(vars)[randomNum]
+            const randomNum = Math.round(rng() * vars.length)
+            const value = vars[randomNum]
 
             return new Variable(value);
         }
@@ -44,6 +46,25 @@ class Variable extends Prop {
 
     evaluate(value) {
         return value[this.name];
+    }
+
+    truthTable(vars) {
+        if (vars.length > 1) {
+            // La prop Variable tiene una sola "letra" por lo que si vars es una lista que tiene mas variables
+            // podemos devolver undefined o alguna otra cosa.
+            return undefined;
+        } else {
+            const varName = vars[0];
+            if (varName == this.name) {
+                return [[{ varName: true }, this.evaluate({ [varName]: true })],
+                [{ varName: false }, this.evaluate({ [varName]: false })]];
+            } else {
+                return undefined;
+                // Si entra aca es porque la variable que recibimos como entrada no
+                // coincide con el nombre de la variable actual. Ej: recibimos la list ["p"] pero la variable
+                // que tenemos es la "q".
+            }
+        }
     }
 }
 
@@ -58,7 +79,7 @@ class Conjunction extends Prop {
         this.right = rightProp;
     }
 
-    static randomProp(rng, vars, maxHeight, minHeight) { 
+    static randomProp(rng, vars, maxHeight, minHeight) {
         var left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -66,7 +87,7 @@ class Conjunction extends Prop {
             return new Conjunction(left, right);
         }
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -87,7 +108,7 @@ class Conjunction extends Prop {
 
         }
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -115,6 +136,9 @@ class Conjunction extends Prop {
         const rightValue = this.right.evaluate(value);
         return leftValue && rightValue;
     }
+
+    truthTable(vars) {
+    }
 }
 
 class Negation extends Prop {
@@ -127,7 +151,7 @@ class Negation extends Prop {
     }
 
     static randomProp(rng, vars, maxHeight, minHeight) {
-        return new Negation(Prop.randomProp(rng, vars, maxHeight -1, minHeight - 1));
+        return new Negation(Prop.randomProp(rng, vars, maxHeight - 1, minHeight - 1));
     }
 
     evaluate(value) {
@@ -147,8 +171,8 @@ class Disjunction extends Prop {
         this.right = rightProp;
     }
 
-    static randomProp(rng, vars, maxHeight, minHeight) { 
-        
+    static randomProp(rng, vars, maxHeight, minHeight) {
+
         var left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -156,7 +180,7 @@ class Disjunction extends Prop {
             return new Disjunction(left, right);
         }
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -177,7 +201,7 @@ class Disjunction extends Prop {
 
         }
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -218,8 +242,8 @@ class Conditional extends Prop {
         this.right = rightProp;
     }
 
-    static randomProp(rng, vars, maxHeight, minHeight) { 
-        
+    static randomProp(rng, vars, maxHeight, minHeight) {
+
         var left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -228,7 +252,7 @@ class Conditional extends Prop {
         }
 
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -249,7 +273,7 @@ class Conditional extends Prop {
 
         }
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -290,15 +314,15 @@ class Biconditional extends Prop {
         this.right = rightProp;
     }
 
-    static randomProp(rng, vars, maxHeight, minHeight) { 
-        
+    static randomProp(rng, vars, maxHeight, minHeight) {
+
         var left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             return new Biconditional(left, right);
         }
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 left = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
@@ -319,7 +343,7 @@ class Biconditional extends Prop {
 
         }
 
-        switch(Math.round(rng()*5)) {
+        switch (Math.round(rng() * 5)) {
             case 0:
                 right = Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
                 break;
