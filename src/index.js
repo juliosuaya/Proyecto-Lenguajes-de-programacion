@@ -26,3 +26,7 @@ const vars_p = ["p"];
 const vars_t = ["p", "q", "t"];
 console.log(props.truthTable(new Variable("p"), vars_p));
 console.log(props.truthTable(and,vars_t))
+
+// Pruebas para el randomTruthTable
+console.log("\nPRUEBAS DE randomTruthTable");
+console.log(props.randomTruthTable(rng, vars_t));

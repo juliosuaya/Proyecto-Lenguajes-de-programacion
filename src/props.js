@@ -21,37 +21,29 @@ class Prop {
     }
 
     truthTable(prop, vars) {
-        var table = [];
-        const varsCount = vars.length;
-        
-        for (var y = 0; y < 2**varsCount; y++) {
-            
-
-            var l1 = {};
-            for (var x = 0; x < varsCount; x++) {
-
-                const jump = 2**x;
-                const actualVar = vars[x];
-                var res = Math.floor(y/jump);
-                if (res % 2 === 0) {
-                    l1[actualVar] = false;
-                }
-                else {
-                    l1[actualVar] = true;
-                }
-                
-                
-            }
-            table.push(l1);
-
-        }
+        const table = createTable(vars);
 
         var finalResult = [];
         table.forEach(values => {
-            finalResult.push( [values, this.evalProp(prop, values)]);
+            finalResult.push([values, this.evalProp(prop, values)]);
         });
         return finalResult;
 
+    }
+
+    // Devuelve una tabla de verdad aleatoria
+    randomTruthTable(rng, vars) {
+        const table = createTable(vars);
+        const finalResult = [];
+        table.forEach(values => {
+            const result = Math.round(rng() * 2);
+            if (result == 1) {
+                finalResult.push([values, true]);
+            } else {
+                finalResult.push([values, false]);
+            }
+        });
+        return finalResult;
     }
 }
 
@@ -209,7 +201,7 @@ class Biconditional extends Prop {
             right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             return new Biconditional(left, right);
         }
-        
+
         left = selectRandomProp(rng, vars, maxHeight, minHeight);
         right = selectRandomProp(rng, vars, maxHeight, minHeight);
         return new Biconditional(left, right);
@@ -239,6 +231,34 @@ function selectRandomProp(rng, vars, maxHeight, minHeight) {
             return Biconditional.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
 
     }
+}
+
+function createTable(vars) {
+    var table = [];
+    const varsCount = vars.length;
+
+    for (var y = 0; y < 2 ** varsCount; y++) {
+
+
+        var l1 = {};
+        for (var x = 0; x < varsCount; x++) {
+
+            const jump = 2 ** x;
+            const actualVar = vars[x];
+            var res = Math.floor(y / jump);
+            if (res % 2 === 0) {
+                l1[actualVar] = false;
+            }
+            else {
+                l1[actualVar] = true;
+            }
+
+
+        }
+        table.push(l1);
+
+    }
+    return table;
 }
 
 
