@@ -39,3 +39,24 @@ console.log(props.fitness(new Variable("p"), randomTruthTable));
 console.log(props.fitness(and, props.truthTable(and,vars_t)));
 console.log(props.fitness(new Variable("p"), props.truthTable(new Variable("p"), vars_p)));
 
+
+// Pruebas para el randomSearch
+console.log("\nPRUEBAS DE randomSearch");
+const propArgs = {
+    vars: vars_t,
+    minHeight: 3,
+    maxHeight: 5
+};
+const bestFitness = props.randomSearch(rng, randomTruthTable, 10000, propArgs);
+console.log(props.fitness(bestFitness, randomTruthTable));
+
+const propArgs2 = {
+    vars: ["a", "b", "c", "d"],
+    minHeight: 3,
+    maxHeight: 5
+};
+const randomTruthTable2 = props.randomTruthTable(rng,propArgs2.vars);
+const bestFitness2 = props.randomSearch(rng, randomTruthTable2, 300000, propArgs2);
+console.log(props.fitness(bestFitness2, randomTruthTable2));
+
+
