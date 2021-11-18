@@ -29,4 +29,13 @@ console.log(props.truthTable(and,vars_t))
 
 // Pruebas para el randomTruthTable
 console.log("\nPRUEBAS DE randomTruthTable");
-console.log(props.randomTruthTable(rng, vars_t));
+const randomTruthTable = props.randomTruthTable(rng, vars_t);
+console.log(randomTruthTable);
+
+
+// Pruebas para el fitness
+console.log("\nPRUEBAS DE fitness");
+console.log(props.fitness(new Variable("p"), randomTruthTable));
+console.log(props.fitness(and, props.truthTable(and,vars_t)));
+console.log(props.fitness(new Variable("p"), props.truthTable(new Variable("p"), vars_p)));
+

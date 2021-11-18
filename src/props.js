@@ -45,6 +45,18 @@ class Prop {
         });
         return finalResult;
     }
+
+    fitness(prop, truthTable) {
+        var total = 0, favorables = 0;
+        truthTable.forEach(x => {
+            const values = x[0], truthValue = x[1];
+            total += 1;
+            if (this.evalProp(prop, values) === truthValue) {
+                favorables += 1;
+            }
+         });
+         return favorables/total;
+    }
 }
 
 class Variable extends Prop {
