@@ -45,6 +45,32 @@ class Prop {
         });
         return finalResult;
     }
+
+    fitness(prop, truthTable) {
+        var total = 0, favorables = 0;
+        truthTable.forEach(x => {
+            const values = x[0], truthValue = x[1];
+            total += 1;
+            if (this.evalProp(prop, values) === truthValue) {
+                favorables += 1;
+            }
+         });
+         return favorables/total;
+    }
+
+    randomSearch(rng, truthTable, count, propArgs) {
+        var steps = count, step = 0, bestProp = null, bestFitness = -99999999999;
+        while (bestFitness <1 && step < steps) {
+            step += 1;
+            var prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+            var fitness = this.fitness(prop, truthTable);
+            if (fitness > bestFitness) {
+                bestProp = prop;
+                bestFitness = fitness;
+            }
+        }
+        return bestProp;
+    }
 }
 
 class Variable extends Prop {
