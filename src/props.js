@@ -1,5 +1,8 @@
 class Prop {
-
+    /* 
+    Falta agregar para variable, y se puede controlar la altura aca y no en cada clase(tener cuidado con la recursividad)
+    o separar Prop a otro lado.
+    */
     static randomProp(rng, vars, maxHeight, minHeight) {
         switch (Math.round(rng() * 4)) {
             case 0:
@@ -16,23 +19,23 @@ class Prop {
         }
     }
 
-    evalProp(prop, value) {
+    static evalProp(prop, value) {
         return prop.evaluate(value);
     }
 
-    truthTable(prop, vars) {
+    static truthTable(prop, vars) {
         const table = createTable(vars);
 
         var finalResult = [];
         table.forEach(values => {
-            finalResult.push([values, this.evalProp(prop, values)]);
+            finalResult.push([values, Prop.evalProp(prop, values)]);
         });
         return finalResult;
 
     }
 
     // Devuelve una tabla de verdad aleatoria
-    randomTruthTable(rng, vars) {
+    static randomTruthTable(rng, vars) {
         const table = createTable(vars);
         const finalResult = [];
         table.forEach(values => {
@@ -46,24 +49,24 @@ class Prop {
         return finalResult;
     }
 
-    fitness(prop, truthTable) {
+    static fitness(prop, truthTable) {
         var total = 0, favorables = 0;
         truthTable.forEach(x => {
             const values = x[0], truthValue = x[1];
             total += 1;
-            if (this.evalProp(prop, values) === truthValue) {
+            if (Prop.evalProp(prop, values) === truthValue) {
                 favorables += 1;
             }
          });
          return favorables/total;
     }
 
-    randomSearch(rng, truthTable, count, propArgs) {
+    static randomSearch(rng, truthTable, count, propArgs) {
         var steps = count, step = 0, bestProp = null, bestFitness = -99999999999;
         while (bestFitness <1 && step < steps) {
             step += 1;
             var prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
-            var fitness = this.fitness(prop, truthTable);
+            var fitness = Prop.fitness(prop, truthTable);
             if (fitness > bestFitness) {
                 bestProp = prop;
                 bestFitness = fitness;
