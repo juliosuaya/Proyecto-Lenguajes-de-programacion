@@ -18,34 +18,46 @@ class EvolutionStrategy {
     }
 
     selection(rng, count) {
-    
+
 
         //suma de todos los fitness
-        console.log(this.population);
         //estaba al reves ya lo corregi
-        const sumFitness = this.population.reduce((sum,individual) => sum + individual.fitness, 0);
-        console.log("SUMFITNESS",sumFitness)
+        const sumFitness = this.population.reduce((sum, individual) => sum + individual.fitness, 0);
         this.population.forEach((individual) => individual.calculateHeigth(sumFitness));
         let selected = [];
 
         for (count; count > 0; count--) {
 
             let randomProb = rng();
-//            console.log("random number", rng());
 
-            for(let individual of this.population){
-  //              console.log("working with ", individual);
+            for (let individual of this.population) {
                 randomProb -= individual.weight;
-    //            console.log("new random number", randomProb);
 
                 if (randomProb <= 0) {
-      //              console.log("individual selected");
                     selected.push(individual);
                     break;
                 }
             }
         }
         this.population = selected;
+    }
+
+    mutation(rng, prop, propsArgs){
+
+    }
+
+    evolutionStrategy(rng, truthTable, steps, count, propArgs){
+        let step = 0;
+        this.initialPopulation(rng, propArgs.vars, 2, propArgs.maxHeight, propArgs.minHeight);
+        this.assessPopulation(truthTable);
+        while ( (this.bestIndividual.fitness < 1) && (step < steps) ) {
+            step += 1;
+            this.selection();
+            this.mutation();
+            this.assessPopulation();
+            // tomar el mejor individuo de la poblacion
+        }
+        return this.bestIndividual;
     }
 }
 
@@ -55,7 +67,7 @@ class Individual {
     weight = 0;
 
     calculateHeigth(total) {
-        this.weight = this.fitness  / total;
+        this.weight = this.fitness / total;
     }
     constructor(prop) {
         this.prop = prop;

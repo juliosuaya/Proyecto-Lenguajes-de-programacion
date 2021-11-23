@@ -50,7 +50,7 @@ class Prop {
     }
 
     static fitness(prop, truthTable) {
-        var total = 0, favorables = 0;
+        let total = 0, favorables = 0;
         truthTable.forEach(x => {
             const values = x[0], truthValue = x[1];
             total += 1;
@@ -62,11 +62,11 @@ class Prop {
     }
 
     static randomSearch(rng, truthTable, count, propArgs) {
-        var steps = count, step = 0, bestProp = null, bestFitness = -99999999999;
+        let steps = count, step = 0, bestProp = null, bestFitness = -99999999999;
         while (bestFitness <1 && step < steps) {
             step += 1;
-            var prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
-            var fitness = Prop.fitness(prop, truthTable);
+            let prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+            let fitness = Prop.fitness(prop, truthTable);
             if (fitness > bestFitness) {
                 bestProp = prop;
                 bestFitness = fitness;
@@ -112,7 +112,7 @@ class Conjunction extends Prop {
     }
 
     static randomProp(rng, vars, maxHeight, minHeight) {
-        var left, right;
+        let left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -162,7 +162,7 @@ class Disjunction extends Prop {
 
     static randomProp(rng, vars, maxHeight, minHeight) {
 
-        var left, right;
+        let left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -193,7 +193,7 @@ class Conditional extends Prop {
 
     static randomProp(rng, vars, maxHeight, minHeight) {
 
-        var left, right;
+        let left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -224,7 +224,7 @@ class Biconditional extends Prop {
 
     static randomProp(rng, vars, maxHeight, minHeight) {
 
-        var left, right;
+        let left, right;
         if (maxHeight <= 1) {
             left = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
             right = Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -263,18 +263,18 @@ function selectRandomProp(rng, vars, maxHeight, minHeight) {
 }
 
 function createTable(vars) {
-    var table = [];
+    let table = [];
     const varsCount = vars.length;
 
-    for (var y = 0; y < 2 ** varsCount; y++) {
+    for (let y = 0; y < 2 ** varsCount; y++) {
 
 
-        var l1 = {};
-        for (var x = 0; x < varsCount; x++) {
+        let l1 = {};
+        for (let x = 0; x < varsCount; x++) {
 
             const jump = 2 ** x;
             const actualVar = vars[x];
-            var res = Math.floor(y / jump);
+            let res = Math.floor(y / jump);
             if (res % 2 === 0) {
                 l1[actualVar] = false;
             }
