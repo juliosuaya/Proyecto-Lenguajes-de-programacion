@@ -33,6 +33,7 @@ class EvolutionStrategy {
 
     ];
 
+    // eslint-disable-next-line no-param-reassign
     for (count; count > 0; count -= 1) {
       let randomProb = rng();
 
@@ -48,7 +49,7 @@ class EvolutionStrategy {
     this.population = selected;
   }
 
-  /*mutation(rng, prop, propArgs) {
+  /* mutation(rng, prop, propArgs) {
     let randomNumber = Math.floor(rng() * prop.countNodes());
     let height = 0;
     let actualNode = prop;
@@ -70,18 +71,18 @@ class EvolutionStrategy {
     const newProp = prop.changeNode(actualNode, newNode);
     console.log(newProp);
     return newProp;
-  }*/
+  } */
 
+  // eslint-disable-next-line class-methods-use-this
   mutation(rng, prop, propArgs) {
-    let randomNode = Math.floor(rng() * prop.countNodes());
-    console.log("PRIMER RANDOMICO");
+    const randomNode = Math.floor(rng() * prop.countNodes());
+    console.log('PRIMER RANDOMICO');
     console.log(randomNode);
-    // tengo dudas de si la altura maxima de esta nueva expresion comienza de 0, 
+    // tengo dudas de si la altura maxima de esta nueva expresion comienza de 0,
     // o si debemos considerarla desde la raiz del arbol (tomando en cuenta height)
-    let newProp = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
-    let mutationProp = prop.changeNode(randomNode, newProp);
-    console.log(mutationProp);
-    return mutationProp;
+
+    prop.changeNode(rng, [randomNode], 0, propArgs);
+    return prop;
   }
 
   evolutionStrategy(rng, truthTable, steps, count, propArgs) {
