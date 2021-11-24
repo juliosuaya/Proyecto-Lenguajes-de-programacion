@@ -107,6 +107,16 @@ class Variable extends Prop {
   countNodes() {
     return 1;
   }
+
+  getChildNodes() {
+    return [];
+  }
+
+  changeNode(randomNode, newNode) {
+    if (randomNode == 0) {
+      return newNode;
+    }
+  }
 }
 
 class Conjunction extends Prop {
@@ -146,6 +156,26 @@ class Conjunction extends Prop {
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
+
+  changeNode(randomNode, newNode) {
+    if (randomNode == 0) {
+      return newNode;
+    }
+    //let actualNode = this
+    let nodesList = this.getChildNodes();
+    let changedProp;
+    nodesList.forEach(node => {
+      randomNode -= 1;
+      if (randomNode == 0) {
+        node = newNode;
+        return this;
+      } else {
+        changedProp = node.changeNode(randomNode, newNode);
+        //actualNode = node;
+      }
+    });
+    return newNode;
+  }
 }
 
 class Negation extends Prop {
@@ -171,6 +201,26 @@ class Negation extends Prop {
 
   countNodes() {
     return 1 + this.val.countNodes();
+  }
+
+  changeNode(randomNode, newNode) {
+    if (randomNode == 0) {
+      return newNode;
+    }
+    //let actualNode = this
+    let nodesList = this.getChildNodes();
+    let changedProp;
+    nodesList.forEach(node => {
+      randomNode -= 1;
+      if (randomNode == 0) {
+        node = newNode;
+        return this;
+      } else {
+        changedProp = node.changeNode(randomNode, newNode);
+        //actualNode = node;
+      }
+    });
+    return newNode;
   }
 }
 
@@ -211,6 +261,38 @@ class Disjunction extends Prop {
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
+
+  changeNode(randomNode, newNode) {
+    console.log("SEGUNDO RANDOMICO DISJUNCION");
+    console.log(randomNode);
+    if (randomNode == 0) {
+      console.log("INcorrectoA");
+      return newNode;
+    }
+    //let actualNode = this
+    let nodesList = this.getChildNodes();
+    let changedProp;
+    nodesList.forEach(node => {
+      randomNode = randomNode - 1;
+      console.log("UNO MENOS DISJUNCION");
+      console.log(randomNode);
+      if (randomNode == 0) {
+        if (node == this.left) {
+          this.left = newNode;
+        } else if (node == this.right) {
+          this.right = newNode;
+        }
+        console.log("correcto DISJUNCION");
+        return this;
+      } else {
+        console.log("aaAkaakkakakakakakakakakak DISJUNCION");
+        changedProp = node.changeNode(randomNode, newNode);
+        //actualNode = node;
+      }
+    });
+    console.log("INcorrectoB DISJUNCION");
+    return newNode;
+  }
 }
 
 class Conditional extends Prop {
@@ -249,6 +331,38 @@ class Conditional extends Prop {
 
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
+  }
+
+  changeNode(randomNode, newNode) {
+    console.log("SEGUNDO RANDOMICO CONDICIONAL");
+    console.log(randomNode);
+    if (randomNode == 0) {
+      console.log("INcorrectoA");
+      return newNode;
+    }
+    //let actualNode = this
+    let nodesList = this.getChildNodes();
+    let changedProp;
+    nodesList.forEach(node => {
+      randomNode = randomNode - 1;
+      console.log("UNO MENOS CONDICIONAL");
+      console.log(randomNode);
+      if (randomNode == 0) {
+        if (node == this.left) {
+          this.left = newNode;
+        } else if (node == this.right) {
+          this.right = newNode;
+        }
+        console.log("correcto CONDICIONAL");
+        return this;
+      } else {
+        console.log("aaAkaakkakakakakakakakakak CONDICIONAL");
+        changedProp = node.changeNode(randomNode, newNode);
+        //actualNode = node;
+      }
+    });
+    console.log("INcorrectoB CONDICIONAL");
+    return newNode;
   }
 }
 
@@ -290,6 +404,38 @@ class Biconditional extends Prop {
 
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
+  }
+
+  changeNode(randomNode, newNode) {
+    console.log("SEGUNDO RANDOMICO BICONDICIONAL");
+    console.log(randomNode);
+    if (randomNode == 0) {
+      console.log("INcorrectoA");
+      return newNode;
+    }
+    //let actualNode = this
+    let nodesList = this.getChildNodes();
+    let changedProp;
+    nodesList.forEach(node => {
+      randomNode = randomNode - 1;
+      console.log("UNO MENOS BICONDICIONAL");
+      console.log(randomNode);
+      if (randomNode == 0) {
+        if (node == this.left) {
+          this.left = newNode;
+        } else if (node == this.right) {
+          this.right = newNode;
+        }
+        console.log("correcto");
+        return this;
+      } else {
+        console.log("aaAkaakkakakakakakakakakak BICONDICIONAL");
+        changedProp = node.changeNode(randomNode, newNode);
+        //actualNode = node;
+      }
+    });
+    console.log("INcorrectoB BICONDICIONAL");
+    return newNode;
   }
 }
 

@@ -82,3 +82,13 @@ console.log(evolutionStrategy.population);
 console.log('\nSELECTION');
 evolutionStrategy.selection(rng, 2);
 console.log(evolutionStrategy.population);
+
+console.log('\nMUTATION TEST1');
+/*console.log(variableP);
+const newProp = evolutionStrategy.mutation(rng, variableP, propArgs);
+console.log(newProp);*/
+
+console.log('\nMUTATION TEST2');
+console.log(disjunction);
+const newProp2 = evolutionStrategy.mutation(rng, disjunction, propArgs);
+//console.log(newProp2);

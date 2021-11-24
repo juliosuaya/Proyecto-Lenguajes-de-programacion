@@ -48,18 +48,40 @@ class EvolutionStrategy {
     this.population = selected;
   }
 
-  mutation(rng, prop, propArgs) {
+  /*mutation(rng, prop, propArgs) {
     let randomNumber = Math.floor(rng() * prop.countNodes());
     let height = 0;
-    let nodoAct = prop;
+    let actualNode = prop;
     while (randomNumber != 0) {
-      prop.getChildNodes();
-      for(node in prop) {
-
+      let nodesList = actualNode.getChildNodes();
+      if (nodesList.length > 0) {
+        actualNode = nodesList[0];
       }
-     randomNumber -= 1; 
-     height +=1;
+      nodesList.forEach(node => {
+        if (randomNumber != 0) {
+          randomNumber -= 1;
+          actualNode = node;
+        }
+      });
+      height += 1;
     }
+    const newNode = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+    console.log(actualNode);
+    const newProp = prop.changeNode(actualNode, newNode);
+    console.log(newProp);
+    return newProp;
+  }*/
+
+  mutation(rng, prop, propArgs) {
+    let randomNode = Math.floor(rng() * prop.countNodes());
+    console.log("PRIMER RANDOMICO");
+    console.log(randomNode);
+    // tengo dudas de si la altura maxima de esta nueva expresion comienza de 0, 
+    // o si debemos considerarla desde la raiz del arbol (tomando en cuenta height)
+    let newProp = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+    let mutationProp = prop.changeNode(randomNode, newProp);
+    console.log(mutationProp);
+    return mutationProp;
   }
 
   evolutionStrategy(rng, truthTable, steps, count, propArgs) {
