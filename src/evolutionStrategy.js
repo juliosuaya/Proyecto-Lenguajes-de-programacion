@@ -29,14 +29,9 @@ class EvolutionStrategy {
 
   selection(rng, count) {
     // suma de todos los fitness
-    console.log(this.population);
-    // estaba al reves ya lo corregi
     const sumFitness = this.population.reduce((sum, individual) => sum + individual.fitness, 0);
-    console.log('SUMFITNESS', sumFitness);
     this.population.forEach((individual) => individual.calculateHeigth(sumFitness));
-    const selected = [
-
-    ];
+    const selected = [];
 
     // eslint-disable-next-line no-param-reassign
     for (count; count > 0; count -= 1) {
@@ -110,6 +105,7 @@ class Individual {
     this.fitness = Prop.fitness(this.prop, truthTable);
   }
 }
+
 function deepClone(obj) {
   if (obj === null || typeof obj !== "object")
     return obj

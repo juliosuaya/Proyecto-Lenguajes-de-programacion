@@ -2,10 +2,10 @@
 /* eslint-disable linebreak-style */
 const seedrandom = require('seedrandom');
 const { Prop } = require('./props');
-const { EvolutionStrategy } = require('./evolutionStrategy');
+const { EvolutionStrategy } = require('./evolutionStrategy');
 const rng = seedrandom('hello.');
 
-const workingStrategyInstance = new EvolutionStrategy();
+const workingStrategyInstance = new EvolutionStrategy();
 const vars = ['p', 'q', 't'];
 
 test('must init poblation', () => {
@@ -24,8 +24,6 @@ test('must assessPopulation poblation', () => {
 });
 
 test('must selection', () => {
-  //console.log(workingStrategyInstance.population.length);
-  //expect(workingStrategyInstance.population.length).toBe(5);
   workingStrategyInstance.selection(rng, 3);
   expect(workingStrategyInstance.population.length).toBe(3);
 });

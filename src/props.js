@@ -74,6 +74,9 @@ class Prop {
       step += 1;
       const prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
       const fitness = Prop.fitness(prop, truthTable);
+      // Esto es para la bitacora
+      console.log(prop);
+      console.log("\nFitness de la prop: " + fitness);
       if (fitness > bestFitness) {
         bestProp = prop;
         bestFitness = fitness;
@@ -107,10 +110,6 @@ class Variable extends Prop {
 
   countNodes() {
     return 1;
-  }
-
-  getChildNodes() {
-    return [];
   }
 
   changeNode(rng, randomNode, height, propArgs) {
@@ -153,10 +152,6 @@ class Conjunction extends Prop {
     return leftValue && rightValue;
   }
 
-  getChildNodes() {
-    return [this.left, this.right];
-  }
-
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
@@ -167,18 +162,7 @@ class Conjunction extends Prop {
     if (randomNode[0] === 0) {
       return true;
     }
-    let res = false;
-    res = this.left.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    res = this.right.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    return false;
+    return checkBranches(rng, randomNode, height, propArgs, this);
   }
 }
 
@@ -197,10 +181,6 @@ class Negation extends Prop {
   evaluate(value) {
     const boolValue = this.val.evaluate(value);
     return !boolValue;
-  }
-
-  getChildNodes() {
-    return [this.val];
   }
 
   countNodes() {
@@ -253,10 +233,6 @@ class Disjunction extends Prop {
     return leftValue || rightValue;
   }
 
-  getChildNodes() {
-    return [this.left, this.right];
-  }
-
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
@@ -267,18 +243,7 @@ class Disjunction extends Prop {
     if (randomNode[0] === 0) {
       return true;
     }
-    let res = false;
-    res = this.left.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    res = this.right.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    return false;
+    return checkBranches(rng, randomNode, height, propArgs, this);
   }
 }
 
@@ -312,10 +277,6 @@ class Conditional extends Prop {
     return !leftValue || rightValue;
   }
 
-  getChildNodes() {
-    return [this.left, this.right];
-  }
-
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
@@ -326,18 +287,7 @@ class Conditional extends Prop {
     if (randomNode[0] === 0) {
       return true;
     }
-    let res = false;
-    res = this.left.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    res = this.right.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    return false;
+    return checkBranches(rng, randomNode, height, propArgs, this);
   }
 }
 
@@ -373,10 +323,6 @@ class Biconditional extends Prop {
     return leftValue === rightValue;
   }
 
-  getChildNodes() {
-    return [this.left, this.right];
-  }
-
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
@@ -387,18 +333,7 @@ class Biconditional extends Prop {
     if (randomNode[0] === 0) {
       return true;
     }
-    let res = false;
-    res = this.left.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    res = this.right.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      this.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    return false;
+    return checkBranches(rng, randomNode, height, propArgs, this);
   }
 }
 
@@ -438,6 +373,21 @@ function createTable(vars) {
     table.push(l1);
   }
   return table;
+}
+
+function checkBranches(rng, randomNode, height, propArgs, classProp){
+  let res = false;
+    res = classProp.left.changeNode(rng, randomNode, height, propArgs);
+    if (res === true) {
+      classProp.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
+      return false;
+    }
+    res = classProp.right.changeNode(rng, randomNode, height, propArgs);
+    if (res === true) {
+      classProp.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
+      return false;
+    }
+    return false;
 }
 
 exports.Prop = Prop;
