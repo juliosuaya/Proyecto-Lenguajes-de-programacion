@@ -82,6 +82,7 @@ class Prop {
         bestFitness = fitness;
       }
     }
+    console.log("CANTIDAD DE EJECUCIONES: ", step);
     return bestProp;
   }
 }
@@ -375,19 +376,19 @@ function createTable(vars) {
   return table;
 }
 
-function checkBranches(rng, randomNode, height, propArgs, classProp){
+function checkBranches(rng, randomNode, height, propArgs, classProp) {
   let res = false;
-    res = classProp.left.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      classProp.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
-    res = classProp.right.changeNode(rng, randomNode, height, propArgs);
-    if (res === true) {
-      classProp.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
-      return false;
-    }
+  res = classProp.left.changeNode(rng, randomNode, height, propArgs);
+  if (res === true) {
+    classProp.left = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
     return false;
+  }
+  res = classProp.right.changeNode(rng, randomNode, height, propArgs);
+  if (res === true) {
+    classProp.right = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight - height, propArgs.minHeight - height);
+    return false;
+  }
+  return false;
 }
 
 exports.Prop = Prop;

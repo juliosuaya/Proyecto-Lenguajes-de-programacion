@@ -8,7 +8,7 @@ const rng = seedrandom('hello.');
 const workingStrategyInstance = new EvolutionStrategy();
 const vars = ['p', 'q', 't'];
 
-test('must init poblation', () => {
+test('must init population', () => {
   const count = 5;
   const maxHeight = 5;
   const minHeight = 3;
@@ -16,7 +16,7 @@ test('must init poblation', () => {
   expect(workingStrategyInstance.population.length).toBe(count);
 });
 
-test('must assessPopulation poblation', () => {
+test('must assessPopulation', () => {
   workingStrategyInstance.assessPopulation(Prop.randomTruthTable(rng, vars));
   workingStrategyInstance.population.forEach(ind => {
     expect(ind.fitness !== null).toBe(true);
@@ -26,4 +26,12 @@ test('must assessPopulation poblation', () => {
 test('must selection', () => {
   workingStrategyInstance.selection(rng, 3);
   expect(workingStrategyInstance.population.length).toBe(3);
+});
+
+test('Mutation', () => {
+  // Implementar.
+});
+
+test('EvolutionStrategy', () => {
+  // Implementar.
 });
