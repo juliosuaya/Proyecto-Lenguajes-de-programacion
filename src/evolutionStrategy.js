@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable linebreak-style */
 /* eslint-disable max-classes-per-file */
-const { Prop } = require('./props');
+const { Prop, Variable } = require('./props');
 
 class EvolutionStrategy {
   population = [];
@@ -14,11 +14,16 @@ class EvolutionStrategy {
       const individual = new Individual(Prop.randomProp(rng, vars, maxHeight, minHeight));
       this.population.push(individual);
     }
+    // eslint-disable-next-line prefer-destructuring
+    this.bestIndividual = this.population[0];
   }
 
   assessPopulation(truthTable) {
     this.population.forEach((individual) => {
       individual.valuateFitness(truthTable);
+      if (this.bestIndividual.fitness < individual.fitness) {
+        this.bestIndividual = individual;
+      }
     });
   }
 
@@ -49,52 +54,38 @@ class EvolutionStrategy {
     this.population = selected;
   }
 
-  /* mutation(rng, prop, propArgs) {
-    let randomNumber = Math.floor(rng() * prop.countNodes());
-    let height = 0;
-    let actualNode = prop;
-    while (randomNumber != 0) {
-      let nodesList = actualNode.getChildNodes();
-      if (nodesList.length > 0) {
-        actualNode = nodesList[0];
-      }
-      nodesList.forEach(node => {
-        if (randomNumber != 0) {
-          randomNumber -= 1;
-          actualNode = node;
-        }
-      });
-      height += 1;
-    }
-    const newNode = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
-    console.log(actualNode);
-    const newProp = prop.changeNode(actualNode, newNode);
-    console.log(newProp);
-    return newProp;
-  } */
-
   // eslint-disable-next-line class-methods-use-this
   mutation(rng, prop, propArgs) {
-    const randomNode = Math.floor(rng() * prop.countNodes());
-    console.log('PRIMER RANDOMICO');
-    console.log(randomNode);
-    // tengo dudas de si la altura maxima de esta nueva expresion comienza de 0,
-    // o si debemos considerarla desde la raiz del arbol (tomando en cuenta height)
-
+    console.log("prop");
+    const numberOfNodes = prop.countNodes();
+    const randomNode = Math.floor(rng() * numberOfNodes) + 1;
+    if (randomNode === 1) {
+      const res = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+      return res;
+    }
     prop.changeNode(rng, [randomNode], 0, propArgs);
     return prop;
   }
 
+  mutatePopulation(rng, propArgs, count) {
+    const actualPopulation = this.population.length;
+    const newMutations = count - actualPopulation;
+    for (let mutation = 0; mutation < newMutations; mutation += 1) {
+      const individual = this.population[mutation % actualPopulation];
+      const mutatedIndividual = this.mutation(rng, deepClone(individual), propArgs);
+      this.population.push(mutatedIndividual);
+    }
+  }
+
   evolutionStrategy(rng, truthTable, steps, count, propArgs) {
     let step = 0;
-    this.initialPopulation(rng, propArgs.vars, 2, propArgs.maxHeight, propArgs.minHeight);
+    this.initialPopulation(rng, propArgs.vars, count, propArgs.maxHeight, propArgs.minHeight);
     this.assessPopulation(truthTable);
     while ((this.bestIndividual.fitness < 1) && (step < steps)) {
       step += 1;
-      this.selection();
-      this.mutation();
-      this.assessPopulation();
-      // tomar el mejor individuo de la poblacion
+      this.selection(rng, count / 2);
+      this.mutatePopulation(rng, propArgs, count);
+      this.assessPopulation(truthTable);
     }
     return this.bestIndividual;
   }
@@ -103,7 +94,7 @@ class EvolutionStrategy {
 class Individual {
   prop;
 
-  fitness = null;
+  fitness = 0;
 
   weight = 0;
 
@@ -119,5 +110,16 @@ class Individual {
     this.fitness = Prop.fitness(this.prop, truthTable);
   }
 }
-
+function deepClone(obj) {
+  if (obj === null || typeof obj !== "object")
+    return obj
+  var props = Object.getOwnPropertyDescriptors(obj)
+  for (var prop in props) {
+    props[prop].value = deepClone(props[prop].value)
+  }
+  return Object.create(
+    Object.getPrototypeOf(obj), 
+    props
+  )
+}
 exports.EvolutionStrategy = EvolutionStrategy;

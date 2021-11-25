@@ -13,12 +13,12 @@ const { EvolutionStrategy } = require('./evolutionStrategy');
 const rng = seedrandom('hello.');
 
 // Props
-const variableP = new Variable('p');
-const variableQ = new Variable('q');
-const and = new Conjunction(variableP, variableQ);
-const biconditional = new Biconditional(and, variableQ);
-const conditional = new Conditional(biconditional, and);
-const disjunction = new Disjunction(conditional, biconditional);
+let variableP = new Variable('p');
+let variableQ = new Variable('q');
+let and = new Conjunction(variableP, variableQ);
+let biconditional = new Biconditional(and, variableQ);
+let conditional = new Conditional(biconditional, and);
+let disjunction = new Disjunction(conditional, biconditional);
 
 // Variables
 const vars_p = ['p'];
@@ -84,11 +84,43 @@ evolutionStrategy.selection(rng, 2);
 console.log(evolutionStrategy.population);
 
 console.log('\nMUTATION TEST1');
-console.log(variableP);
-evolutionStrategy.mutation(rng, variableP, propArgs);
-console.log(variableP);
+
+const variableH = new Variable('H');
+console.log(variableH);
+const z = evolutionStrategy.mutation(rng, variableH, propArgs);
+console.log(z);
 
 console.log('\nMUTATION TEST2');
-console.log(disjunction);
-evolutionStrategy.mutation(rng, disjunction, propArgs);
-console.log(disjunction);
+const randomProp3 = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+console.log(randomProp3);
+let str3 = JSON.stringify(randomProp3);
+const randomPropEvol3 = evolutionStrategy.mutation(rng, randomProp3, propArgs);
+console.log(JSON.stringify(randomPropEvol3) === str3);
+
+console.log('\nMUTATION TEST3');
+const randomProp2 = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+let str2 = JSON.stringify(randomProp2);
+const randomPropEvol2 = evolutionStrategy.mutation(rng, randomProp2, propArgs);
+console.log(JSON.stringify(randomPropEvol2) === str2);
+
+console.log('\nMUTATION TEST4');
+const randomProp4 = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+let str4 = JSON.stringify(randomProp4);
+const randomPropEvol4 = evolutionStrategy.mutation(rng, randomProp4, propArgs);
+console.log(JSON.stringify(randomPropEvol4) === str4);
+
+console.log('\nMUTATION TEST5');
+const randomProp5 = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+let str5 = JSON.stringify(randomProp5);
+const randomPropEvol5 = evolutionStrategy.mutation(rng, randomProp5, propArgs);
+console.log(JSON.stringify(randomPropEvol5) === str5);
+
+console.log('\nEVOLUTION STRATEGY TEST');
+const propArgsEvStrategy = {
+  vars: ['a', 'b', 'c'],
+  minHeight: 3,
+  maxHeight: 5,
+};
+const truthTableEvStrategy = Prop.randomTruthTable(rng,propArgsEvStrategy.vars);
+const evStrategy = new EvolutionStrategy();
+evStrategy.evolutionStrategy(rng, truthTableEvStrategy, 70, 50, propArgsEvStrategy);

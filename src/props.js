@@ -10,7 +10,7 @@ class Prop {
     o separar Prop a otro lado.
     */
   static randomProp(rng, vars, maxHeight, minHeight) {
-    switch (Math.round(rng() * 4)) {
+    switch (Math.floor(rng() * 5)) {
       case 0:
         return Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
       case 1:
@@ -43,7 +43,7 @@ class Prop {
     const table = createTable(vars);
     const finalResult = [];
     table.forEach((values) => {
-      const result = Math.round(rng() * 2);
+      const result = Math.floor(rng() * 2);
       if (result === 1) {
         finalResult.push([values, true]);
       } else {
@@ -93,9 +93,8 @@ class Variable extends Prop {
 
   static randomProp(rng, vars, maxHeight, minHeight) {
     if (minHeight <= 1) {
-      const randomNum = Math.round(rng() * vars.length);
+      const randomNum = Math.floor(rng() * vars.length);
       const value = vars[randomNum];
-
       return new Variable(value);
     }
 
@@ -117,7 +116,7 @@ class Variable extends Prop {
   changeNode(rng, randomNode, height, propArgs) {
     // eslint-disable-next-line no-param-reassign
     randomNode[0] -= 1;
-    if (randomNode === 0) {
+    if (randomNode[0] === 0) {
       return true;
     }
     return false;
@@ -261,37 +260,6 @@ class Disjunction extends Prop {
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
-  /*
-  changeNode(randomNode, newNode) {
-    console.log('SEGUNDO RANDOMICO DISJUNCION');
-    console.log(randomNode);
-    if (randomNode == 0) {
-      console.log('INcorrectoA');
-      return newNode;
-    }
-    // let actualNode = this
-    const nodesList = this.getChildNodes();
-    let changedProp;
-    nodesList.forEach((node) => {
-      randomNode -= 1;
-      console.log('UNO MENOS DISJUNCION');
-      console.log(randomNode);
-      if (randomNode == 0) {
-        if (node == this.left) {
-          this.left = newNode;
-        } else if (node == this.right) {
-          this.right = newNode;
-        }
-        console.log('correcto DISJUNCION');
-        return this;
-      }
-      console.log('aaAkaakkakakakakakakakakak DISJUNCION');
-      changedProp = node.changeNode(randomNode, newNode);
-      // actualNode = node;
-    });
-    console.log('INcorrectoB DISJUNCION');
-    return newNode;
-  } */
 
   changeNode(rng, randomNode, height, propArgs) {
     // eslint-disable-next-line no-param-reassign
@@ -435,7 +403,7 @@ class Biconditional extends Prop {
 }
 
 function selectRandomProp(rng, vars, maxHeight, minHeight) {
-  switch (Math.round(rng() * 5)) {
+  switch (Math.floor(rng() * 6)) {
     case 0:
       return Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
     case 1:
