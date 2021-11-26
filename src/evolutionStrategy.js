@@ -79,6 +79,12 @@ class EvolutionStrategy {
     this.assessPopulation(truthTable);
     while ((this.bestIndividual.fitness < 1) && (step < steps)) {
       step += 1;
+      // Esto es para la bitacora.
+      // console.log("Paso actual: " + step);
+      // console.log("Fitness maximo de la poblacion: " + this.bestIndividual.fitness);
+      // console.log("Fitness minimo de la poblacion: " );    FALTA IMPLEMEBTAR
+      // console.log("Fitness promedio de la poblacion: " );  FALTA IMPLEMEBTAR
+      // console.log("Mejor individuo: " + this.bestIndividual);
       this.selection(rng, count / 2);
       this.mutatePopulation(rng, propArgs, count);
       this.assessPopulation(truthTable);

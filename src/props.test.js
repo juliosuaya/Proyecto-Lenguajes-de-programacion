@@ -61,9 +61,10 @@ test('RandomSearch', () => {
         maxHeight: 8,
     };
     const truthTableresult = Prop.randomTruthTable(rng, propArgs.vars);
-    const prop = Prop.randomSearch(rng, truthTableresult, 167, propArgs2);
-    const fitness = Prop.fitness(prop, truthTableresult);
+    const result = Prop.randomSearch(rng, truthTableresult, 167, propArgs2);
+    const fitness = Prop.fitness(result[0], truthTableresult);
     // Luego de buscar unas 167 props random, se llega a una con fitness = 1,
     // es decir, que se adapta a la tabla de verdad dada.
+    console.log("Cantidad de pasos: " + result[1]);
     expect(fitness).toBe(1);
 });

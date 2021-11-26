@@ -30,7 +30,6 @@ class Prop {
 
   static truthTable(prop, vars) {
     const table = createTable(vars);
-
     const finalResult = [];
     table.forEach((values) => {
       finalResult.push([values, Prop.evalProp(prop, values)]);
@@ -74,15 +73,14 @@ class Prop {
       step += 1;
       const prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
       const fitness = Prop.fitness(prop, truthTable);
-      // Esto es para la bitacora
-   //   console.log(prop);
-   //   console.log("\nFitness de la prop: " + fitness);
+      // Esto es para la bitacora.
+      //   console.log(prop);
+      //   console.log("\nFitness de la prop: " + fitness);
       if (fitness > bestFitness) {
         bestProp = prop;
         bestFitness = fitness;
       }
     }
-  //  console.log("CANTIDAD DE EJECUCIONES: ", step);
     return [bestProp, step];
   }
 }
