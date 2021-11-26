@@ -54,12 +54,14 @@ class EvolutionStrategy {
   mutation(rng, prop, propArgs) {
     const numberOfNodes = prop.countNodes();
     const randomNode = Math.floor(rng() * numberOfNodes) + 1;
+    let res = null;
     if (randomNode === 1) {
-      const res = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
-      return res;
+      res = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+    } else {
+      res = prop.clone();
+      res.changeNode(rng, [randomNode], 0, propArgs);
     }
-    prop.changeNode(rng, [randomNode], 0, propArgs);
-    return prop;
+    return res;
   }
 
   mutatePopulation(rng, propArgs, count) {

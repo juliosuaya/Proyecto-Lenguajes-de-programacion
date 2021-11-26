@@ -3,12 +3,13 @@
 const seedrandom = require('seedrandom');
 const { Prop, Variable, Conjunction } = require('./props');
 const { EvolutionStrategy } = require('./evolutionStrategy');
+
 const rng = seedrandom('hello.');
 
 const workingStrategyInstance = new EvolutionStrategy();
 const vars = ['p', 'q', 't'];
 const propArgs = {
-  vars: ["p", "q", "t"],
+  vars: ['p', 'q', 't'],
   minHeight: 3,
   maxHeight: 5,
 };
@@ -23,7 +24,7 @@ test('init population', () => {
 
 test('assessPopulation', () => {
   workingStrategyInstance.assessPopulation(Prop.randomTruthTable(rng, vars));
-  workingStrategyInstance.population.forEach(ind => {
+  workingStrategyInstance.population.forEach((ind) => {
     expect(ind.fitness !== null).toBe(true);
   });
 });
@@ -41,7 +42,7 @@ test('Mutation test1', () => {
 });
 
 test('Mutation test2', () => {
-  const or = new Conjunction(new Variable("h"), new Variable("r"));
+  const or = new Conjunction(new Variable('h'), new Variable('r'));
   const propExpected = workingStrategyInstance.mutation(rng, or, propArgs);
   const resReceived = JSON.stringify(propExpected) === JSON.stringify(or);
   expect(resReceived).toBe(false);
@@ -55,9 +56,10 @@ test('Mutation test3', () => {
 });
 
 test('EvolutionStrategy', () => {
-  const result = workingStrategyInstance.evolutionStrategy(rng, Prop.randomTruthTable(rng, vars), 167, 50, propArgs);
+  const result = workingStrategyInstance
+    .evolutionStrategy(rng, Prop.randomTruthTable(rng, vars), 167, 50, propArgs);
   const bestProp = result[0];
-  const fitness = bestProp.fitness;
-  console.log("Cantidad de pasos: " + result[1])
+  const { fitness } = bestProp;
+  console.log(`Cantidad de pasos: ${result[1]}`);
   expect(fitness).toBe(1);
 });

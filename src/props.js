@@ -37,7 +37,6 @@ class Prop {
     return finalResult;
   }
 
-  // Devuelve una tabla de verdad aleatoria
   static randomTruthTable(rng, vars) {
     const table = createTable(vars);
     const finalResult = [];
