@@ -11,7 +11,7 @@ const {
 const { EvolutionStrategy } = require('./evolutionStrategy');
 
 const rng = seedrandom('hello.');
-
+/*
 // Props
 let variableP = new Variable('p');
 let variableQ = new Variable('q');
@@ -113,7 +113,7 @@ console.log('\nMUTATION TEST5');
 const randomProp5 = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
 let str5 = JSON.stringify(randomProp5);
 const randomPropEvol5 = evolutionStrategy.mutation(rng, randomProp5, propArgs);
-console.log(JSON.stringify(randomPropEvol5) === str5);
+console.log(JSON.stringify(randomPropEvol5) === str5);*/
 
 console.log('\nEVOLUTION STRATEGY TEST');
 const propArgsEvStrategy = {
@@ -121,6 +121,25 @@ const propArgsEvStrategy = {
   minHeight: 3,
   maxHeight: 5,
 };
-const truthTableEvStrategy = Prop.randomTruthTable(rng,propArgsEvStrategy.vars);
+const truthTableEvStrategy = Prop.randomTruthTable(rng, propArgsEvStrategy.vars);
 const evStrategy = new EvolutionStrategy();
-evStrategy.evolutionStrategy(rng, truthTableEvStrategy, 70, 50, propArgsEvStrategy);
+
+let sum = 0;
+let count = 0;
+for (count = 0; count < 100; count += 1) {
+  const bestIndividual = Prop.randomSearch(rng, truthTableEvStrategy, 9999999, propArgsEvStrategy);
+  //console.log(bestIndividual);
+  sum += bestIndividual[1];
+}
+console.log("PROMEDIO DE PASOS PARA HALLAR LA EXPRESION CON MEJOR FITNESS, RANDOM SEARCH");
+console.log(sum / count);
+
+sum = 0;
+count = 0;
+for (count = 0; count < 100; count += 1) {
+  const bestIndividual = evStrategy.evolutionStrategy(rng, truthTableEvStrategy, 9999999, 50, propArgsEvStrategy);
+ // console.log(bestIndividual);
+  sum += bestIndividual[1];
+}
+console.log("PROMEDIO DE PASOS PARA HALLAR LA EXPRESION CON MEJOR FITNESS, TOMANDO UNA POBLACION INICIAL DE 50, ESTRATEGIA EVOLUTIVA");
+console.log(sum / count);

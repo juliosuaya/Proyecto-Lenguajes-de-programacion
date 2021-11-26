@@ -75,15 +75,15 @@ class Prop {
       const prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
       const fitness = Prop.fitness(prop, truthTable);
       // Esto es para la bitacora
-      console.log(prop);
-      console.log("\nFitness de la prop: " + fitness);
+   //   console.log(prop);
+   //   console.log("\nFitness de la prop: " + fitness);
       if (fitness > bestFitness) {
         bestProp = prop;
         bestFitness = fitness;
       }
     }
-    console.log("CANTIDAD DE EJECUCIONES: ", step);
-    return bestProp;
+  //  console.log("CANTIDAD DE EJECUCIONES: ", step);
+    return [bestProp, step];
   }
 }
 
@@ -120,6 +120,10 @@ class Variable extends Prop {
       return true;
     }
     return false;
+  }
+
+  clone() {
+    return new Variable(JSON.parse(JSON.stringify(this.name)));
   }
 }
 
@@ -165,6 +169,10 @@ class Conjunction extends Prop {
     }
     return checkBranches(rng, randomNode, height, propArgs, this);
   }
+
+  clone() {
+    return new Conjunction(this.left.clone(), this.right.clone());
+  }
 }
 
 class Negation extends Prop {
@@ -201,6 +209,10 @@ class Negation extends Prop {
       return false;
     }
     return false;
+  }
+
+  clone() {
+    return new Negation(this.val.clone());
   }
 }
 
@@ -246,6 +258,10 @@ class Disjunction extends Prop {
     }
     return checkBranches(rng, randomNode, height, propArgs, this);
   }
+
+  clone() {
+    return new Disjunction(this.left.clone(), this.right.clone());
+  }
 }
 
 class Conditional extends Prop {
@@ -289,6 +305,10 @@ class Conditional extends Prop {
       return true;
     }
     return checkBranches(rng, randomNode, height, propArgs, this);
+  }
+
+  clone() {
+    return new Conditional(this.left.clone(), this.right.clone());
   }
 }
 
@@ -335,6 +355,10 @@ class Biconditional extends Prop {
       return true;
     }
     return checkBranches(rng, randomNode, height, propArgs, this);
+  }
+
+  clone() {
+    return new Biconditional(this.left.clone(), this.right.clone());
   }
 }
 

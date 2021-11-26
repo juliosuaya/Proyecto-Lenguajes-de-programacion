@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-use-before-define */
 /* eslint-disable linebreak-style */
@@ -51,7 +52,6 @@ class EvolutionStrategy {
 
   // eslint-disable-next-line class-methods-use-this
   mutation(rng, prop, propArgs) {
-    console.log("prop");
     const numberOfNodes = prop.countNodes();
     const randomNode = Math.floor(rng() * numberOfNodes) + 1;
     if (randomNode === 1) {
@@ -67,12 +67,13 @@ class EvolutionStrategy {
     const newMutations = count - actualPopulation;
     for (let mutation = 0; mutation < newMutations; mutation += 1) {
       const individual = this.population[mutation % actualPopulation];
-      const mutatedIndividual = this.mutation(rng, deepClone(individual), propArgs);
+      const mutatedIndividual = new Individual(this.mutation(rng, individual.prop.clone(), propArgs));
       this.population.push(mutatedIndividual);
     }
   }
 
   evolutionStrategy(rng, truthTable, steps, count, propArgs) {
+    this.resetPopulation();
     let step = 0;
     this.initialPopulation(rng, propArgs.vars, count, propArgs.maxHeight, propArgs.minHeight);
     this.assessPopulation(truthTable);
@@ -82,7 +83,12 @@ class EvolutionStrategy {
       this.mutatePopulation(rng, propArgs, count);
       this.assessPopulation(truthTable);
     }
-    return this.bestIndividual;
+    return [this.bestIndividual, step];
+  }
+
+  resetPopulation() {
+    this.population = [];
+    this.bestIndividual = null;
   }
 }
 
@@ -104,18 +110,5 @@ class Individual {
   valuateFitness(truthTable) {
     this.fitness = Prop.fitness(this.prop, truthTable);
   }
-}
-
-function deepClone(obj) {
-  if (obj === null || typeof obj !== "object")
-    return obj
-  var props = Object.getOwnPropertyDescriptors(obj)
-  for (var prop in props) {
-    props[prop].value = deepClone(props[prop].value)
-  }
-  return Object.create(
-    Object.getPrototypeOf(obj), 
-    props
-  )
 }
 exports.EvolutionStrategy = EvolutionStrategy;
