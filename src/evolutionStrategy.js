@@ -1,9 +1,10 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-use-before-define */
 /* eslint-disable linebreak-style */
 /* eslint-disable max-classes-per-file */
-const { Prop, Variable } = require('./props');
+const { Prop } = require('./props');
 
 class EvolutionStrategy {
   population = [];
@@ -69,7 +70,7 @@ class EvolutionStrategy {
     const newMutations = count - actualPopulation;
     for (let mutation = 0; mutation < newMutations; mutation += 1) {
       const individual = this.population[mutation % actualPopulation];
-      const mutatedIndividual = new Individual(this.mutation(rng, individual.prop.clone(), propArgs));
+      const mutatedIndividual = new Individual(this.mutation(rng, individual.prop, propArgs));
       this.population.push(mutatedIndividual);
     }
   }

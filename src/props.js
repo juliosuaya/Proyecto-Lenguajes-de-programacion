@@ -1,3 +1,5 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-use-before-define */
@@ -110,6 +112,7 @@ class Variable extends Prop {
     return 1;
   }
 
+  // eslint-disable-next-line no-unused-vars
   changeNode(rng, randomNode, height, propArgs) {
     // eslint-disable-next-line no-param-reassign
     randomNode[0] -= 1;
@@ -380,9 +383,9 @@ function createTable(vars) {
   const table = [];
   const varsCount = vars.length;
 
-  for (let y = 0; y < 2 ** varsCount; y++) {
+  for (let y = 0; y < 2 ** varsCount; y += 1) {
     const l1 = {};
-    for (let x = 0; x < varsCount; x++) {
+    for (let x = 0; x < varsCount; x += 1) {
       const jump = 2 ** x;
       const actualVar = vars[x];
       const res = Math.floor(y / jump);
