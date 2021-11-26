@@ -45,16 +45,20 @@ test('Mutation test1', () => {
 
 test('Mutation test2', () => {
   const or = new Conjunction(new Variable('h'), new Variable('r'));
+  const initialValue = JSON.stringify(or);
   const propExpected = workingStrategyInstance.mutation(rng, or, propArgs);
-  const resReceived = JSON.stringify(propExpected) === JSON.stringify(or);
-  expect(resReceived).toBe(false);
+  const finalValue = JSON.stringify(propExpected);
+  const result = finalValue === initialValue;
+  expect(result).toBe(false);
 });
 
 test('Mutation test3', () => {
   const randomProp = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+  const initialValue = JSON.stringify(randomProp);
   const randomPropExpected = workingStrategyInstance.mutation(rng, randomProp, propArgs);
-  const resReceived = JSON.stringify(randomPropExpected) === JSON.stringify(randomProp);
-  expect(resReceived).toBe(false);
+  const finalValue = JSON.stringify(randomPropExpected);
+  const result = finalValue === initialValue;
+  expect(result).toBe(false);
 });
 
 test('EvolutionStrategy', () => {

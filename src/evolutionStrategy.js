@@ -32,7 +32,6 @@ class EvolutionStrategy {
   selection(rng, count) {
     // suma de todos los fitness
     const sumFitness = this.population.reduce((sum, individual) => sum + individual.fitness, 0);
-    this.population.forEach((individual) => individual.calculateHeigth(sumFitness));
     const selected = [];
 
     // eslint-disable-next-line no-param-reassign
@@ -41,7 +40,7 @@ class EvolutionStrategy {
 
       // eslint-disable-next-line no-restricted-syntax
       for (const individual of this.population) {
-        randomProb -= individual.weight;
+        randomProb -= (individual.fitness / sumFitness); 
         if (randomProb <= 0) {
           selected.push(individual);
           break;
@@ -59,19 +58,17 @@ class EvolutionStrategy {
     if (randomNode === 1) {
       res = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
     } else {
-      res = prop.clone();
+      res = prop;
       res.changeNode(rng, [randomNode], 0, propArgs);
     }
     return res;
   }
 
   mutatePopulation(rng, propArgs, count) {
-    const actualPopulation = this.population.length;
-    const newMutations = count - actualPopulation;
-    for (let mutation = 0; mutation < newMutations; mutation += 1) {
-      const individual = this.population[mutation % actualPopulation];
-      const mutatedIndividual = new Individual(this.mutation(rng, individual.prop, propArgs));
-      this.population.push(mutatedIndividual);
+    for (let mutation = 0; mutation < count; mutation += 1) {
+      let individual = this.population[mutation];
+      let newProp = this.mutation(rng, individual.prop, propArgs);
+      this.population[mutation] = new Individual(newProp);
     }
   }
 
@@ -88,7 +85,7 @@ class EvolutionStrategy {
       // console.log("Fitness minimo de la poblacion: " );    FALTA IMPLEMEBTAR
       // console.log("Fitness promedio de la poblacion: " );  FALTA IMPLEMEBTAR
       // console.log("Mejor individuo: " + this.bestIndividual);
-      this.selection(rng, count / 2);
+      this.selection(rng, count);
       this.mutatePopulation(rng, propArgs, count);
       this.assessPopulation(truthTable);
     }
@@ -105,12 +102,6 @@ class Individual {
   prop;
 
   fitness = 0;
-
-  weight = 0;
-
-  calculateHeigth(total) {
-    this.weight = this.fitness / total;
-  }
 
   constructor(prop) {
     this.prop = prop;

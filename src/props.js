@@ -6,12 +6,10 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-classes-per-file */
 class Prop {
-  /*
-    Falta agregar para variable, y se puede controlar la altura aca y
-     no en cada clase(tener cuidado con la recursividad)
-    o separar Prop a otro lado.
-    */
   static randomProp(rng, vars, maxHeight, minHeight) {
+    if (maxHeight == 0 || maxHeight == 1) {
+      return Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1)
+    }
     switch (Math.floor(rng() * 5)) {
       case 0:
         return Conjunction.randomProp(rng, vars, maxHeight - 1, minHeight - 1);
@@ -110,6 +108,10 @@ class Variable extends Prop {
 
   countNodes() {
     return 1;
+  }
+
+  unparse(){
+    
   }
 
   // eslint-disable-next-line no-unused-vars
