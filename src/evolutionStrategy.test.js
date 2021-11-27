@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+/* eslint-disable linebreak-style */
+/* eslint-disable no-console */
+>>>>>>> Fase2
 /* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 const seedrandom = require('seedrandom');
@@ -43,16 +48,32 @@ test('Mutation test1', () => {
 
 test('Mutation test2', () => {
   const or = new Conjunction(new Variable('h'), new Variable('r'));
+<<<<<<< HEAD
   const propExpected = workingStrategyInstance.mutation(rng, or, propArgs);
   const resReceived = JSON.stringify(propExpected) === JSON.stringify(or);
   expect(resReceived).toBe(false);
+=======
+  const initialValue = JSON.stringify(or);
+  const propExpected = workingStrategyInstance.mutation(rng, or, propArgs);
+  const finalValue = JSON.stringify(propExpected);
+  const result = finalValue === initialValue;
+  expect(result).toBe(false);
+>>>>>>> Fase2
 });
 
 test('Mutation test3', () => {
   const randomProp = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+<<<<<<< HEAD
   const randomPropExpected = workingStrategyInstance.mutation(rng, randomProp, propArgs);
   const resReceived = JSON.stringify(randomPropExpected) === JSON.stringify(randomProp);
   expect(resReceived).toBe(false);
+=======
+  const initialValue = JSON.stringify(randomProp);
+  const randomPropExpected = workingStrategyInstance.mutation(rng, randomProp, propArgs);
+  const finalValue = JSON.stringify(randomPropExpected);
+  const result = finalValue === initialValue;
+  expect(result).toBe(false);
+>>>>>>> Fase2
 });
 
 test('EvolutionStrategy', () => {

@@ -9,6 +9,11 @@ const propArgs = {
     minHeight: 2,
     maxHeight: 2,
 };
+const propArgsHeight0 = {
+    vars: ["p", "q", "t"],
+    minHeight: 0,
+    maxHeight: 0,
+};
 const values = { p: true, q: false, t: true };
 
 test('RandomProp', () => {
@@ -16,6 +21,13 @@ test('RandomProp', () => {
     let nodes = prop.countNodes();
     // Como la altura maxima y minima es 2, tiene 3 nodos.
     expect(nodes).toBe(3);
+});
+
+test('RandomProp Variable altura 0', () => {
+    const prop = Prop.randomProp(rng, propArgsHeight0.vars, propArgsHeight0.maxHeight, propArgsHeight0.minHeight);
+    let nodes = prop.countNodes();
+    // Como la altura maxima y minima es 0, tiene 1 nodo.
+    expect(nodes).toBe(1);
 });
 
 test('EvalProp', () => {
