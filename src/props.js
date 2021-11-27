@@ -1,10 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-param-reassign */
-/* eslint-disable max-len */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-use-before-define */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-classes-per-file */
 class Prop {
   static bitacora = false;
   static randomProp(rng, vars, maxHeight, minHeight) {

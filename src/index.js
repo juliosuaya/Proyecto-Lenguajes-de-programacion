@@ -1,15 +1,9 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable camelcase */
-/* eslint-disable no-console */
-/* eslint-disable no-use-before-define */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-classes-per-file */
 const seedrandom = require('seedrandom');
 const { Prop } = require('./props');
 const { EvolutionStrategy } = require('./evolutionStrategy');
 
 const rng = seedrandom('hello.');
-// Si se quiere imprimir la bitacora de los metodos se debe descomentar la siguiente linea:
+// Si se quiere imprimir la bitacora de los metodos se debe habilitar la siguiente bandera:
 Prop.bitacora = false;
 let sum = 0;
 let count = 0;
@@ -37,25 +31,25 @@ const truthTableOfProp = Prop.truthTable(prop, propArgs3Var.vars);
 const evStrategy = new EvolutionStrategy();
 
 console.log('\n---------------------------------------------------------------------------');
-console.log('EXPERIMENTOS CON UNA VARIABLE');
+console.log('Experimentos Con Una Variable');
 console.log('---------------------------------------------------------------------------');
 
 experiment(randomTruthTable1Var, propArgs1Var);
 
 console.log('\n---------------------------------------------------------------------------');
-console.log('EXPERIMENTOS CON DOS VARIABLES');
+console.log('Experimentos Con Dos Variables');
 console.log('---------------------------------------------------------------------------');
 
 experiment(randomTruthTable2Var, propArgs2Var);
 
 console.log('\n---------------------------------------------------------------------------');
-console.log('EXTRA 1 --> EXPERIMENTOS CON TRES VARIABLES');
+console.log('Extra 1 --> Experimentos Con Tres Variables');
 console.log('---------------------------------------------------------------------------');
 
 experiment(randomTruthTable3Var, propArgs3Var);
 
 console.log('\n---------------------------------------------------------------------------');
-console.log('EXTRA 2 --> UTILIZANDO TABLA DE VERDAD DE EXPRESION GENERADA AL AZAR');
+console.log('Extra 2 --> Utilizando Tabla De Verdad De Expresion Generada Al Azar');
 console.log('---------------------------------------------------------------------------');
 
 experiment(truthTableOfProp, propArgs3Var);
@@ -63,21 +57,21 @@ experiment(truthTableOfProp, propArgs3Var);
 function experiment(truthTable, propArgs) {
   sum = 0;
   count = 0;
-  console.log('\nRANDOM SEARCH');
+  console.log('\nRandom Search');
   for (count = 0; count < 100; count += 1) {
     const bestIndividual = Prop.randomSearch(rng, truthTable, 9999999, propArgs);
     sum += bestIndividual[1];
   }
-  console.log('PROMEDIO DE PASOS PARA HALLAR LA EXPRESION CON MEJOR FITNESS, RANDOM SEARCH');
+  console.log('Promedio De Pasos Para Hallar La Expresion Con Mejor Fitness, Random Search');
   console.log(sum / count);
 
-  console.log('\nEVOLUTION STRATEGY');
+  console.log('\nEvolution Strategy');
   sum = 0;
   count = 0;
   for (count = 0; count < 100; count += 1) {
     const bestIndividual = evStrategy.evolutionStrategy(rng, truthTable, 9999999, 20, propArgs);
     sum += bestIndividual[1];
   }
-  console.log('PROMEDIO DE PASOS PARA HALLAR LA EXPRESION CON MEJOR FITNESS, POBLACION INICIAL DE 20, ESTRATEGIA EVOLUTIVA');
+  console.log('Promedio De Pasos Para Hallar La Expresion Con Mejor Fitness, Poblacion Inicial De 20, Estrategia Evolutiva');
   console.log(sum / count);
 }

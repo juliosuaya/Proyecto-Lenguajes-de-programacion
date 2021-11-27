@@ -11,5 +11,11 @@
         "ecmaVersion": 13
     },
     "rules": {
+        "linebreak-style": "off",
+        "camelcase": "off",
+        "no-console": "off",
+        "no-use-before-define": "off",
+        "linebreak-style": "off",
+        "max-classes-per-file": "off",
     }
 }

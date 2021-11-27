@@ -1,9 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
-/* eslint-disable no-use-before-define */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-classes-per-file */
 const { Prop } = require('./props');
 
 class EvolutionStrategy {

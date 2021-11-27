@@ -1,7 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-console */
-/* eslint-disable no-undef */
-/* eslint-disable linebreak-style */
 const seedrandom = require('seedrandom');
 const { Prop, Variable, Conjunction } = require('./props');
 const { EvolutionStrategy } = require('./evolutionStrategy');
