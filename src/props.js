@@ -6,6 +6,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-classes-per-file */
 class Prop {
+  static bitacora = false;
   static randomProp(rng, vars, maxHeight, minHeight) {
     if (maxHeight == 0 || maxHeight == 1) {
       return Variable.randomProp(rng, vars, maxHeight - 1, minHeight - 1)
@@ -73,8 +74,10 @@ class Prop {
       const prop = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
       const fitness = Prop.fitness(prop, truthTable);
       // Esto es para la bitacora.
-      //   console.log(prop);
-      //   console.log("\nFitness de la prop: " + fitness);
+      if (Prop.bitacora) {
+        console.log(prop.unparse());
+        console.log("\nFitness de la prop: " + fitness);
+      }
       if (fitness > bestFitness) {
         bestProp = prop;
         bestFitness = fitness;
@@ -110,8 +113,8 @@ class Variable extends Prop {
     return 1;
   }
 
-  unparse(){
-    
+  unparse() {
+    return this.name;
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -163,13 +166,17 @@ class Conjunction extends Prop {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
 
+  unparse() {
+    return " (" + this.left.unparse() + ") Conjuntion (" + this.right.unparse() + ") ";
+  }
+
   changeNode(rng, randomNode, height, propArgs) {
     // eslint-disable-next-line no-param-reassign
-    randomNode[0] -= 1; height += 1;
+    randomNode[0] -= 1; 
     if (randomNode[0] === 0) {
       return true;
     }
-    return checkBranches(rng, randomNode, height, propArgs, this);
+    return checkBranches(rng, randomNode, height+1, propArgs, this);
   }
 
   clone() {
@@ -196,6 +203,10 @@ class Negation extends Prop {
 
   countNodes() {
     return 1 + this.val.countNodes();
+  }
+
+  unparse() {
+    return "Negation(" + this.val.unparse() + ")";
   }
 
   changeNode(rng, randomNode, height, propArgs) {
@@ -252,6 +263,10 @@ class Disjunction extends Prop {
     return 1 + this.left.countNodes() + this.right.countNodes();
   }
 
+  unparse() {
+    return " (" + this.left.unparse() + ") Disjunction (" + this.right.unparse() + ") ";
+  }
+
   changeNode(rng, randomNode, height, propArgs) {
     // eslint-disable-next-line no-param-reassign
     randomNode[0] -= 1; height += 1;
@@ -298,6 +313,10 @@ class Conditional extends Prop {
 
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
+  }
+
+  unparse() {
+    return " (" + this.left.unparse() + ") Conditional (" + this.right.unparse() + ") ";
   }
 
   changeNode(rng, randomNode, height, propArgs) {
@@ -348,6 +367,10 @@ class Biconditional extends Prop {
 
   countNodes() {
     return 1 + this.left.countNodes() + this.right.countNodes();
+  }
+
+  unparse() {
+    return " (" + this.left.unparse() + ") Biconditional (" + this.right.unparse() + ") ";
   }
 
   changeNode(rng, randomNode, height, propArgs) {

@@ -9,7 +9,8 @@ const { Prop } = require('./props');
 const { EvolutionStrategy } = require('./evolutionStrategy');
 
 const rng = seedrandom('hello.');
-
+// Si se quiere imprimir la bitacora de los metodos se debe descomentar la siguiente linea:
+Prop.bitacora = false;
 let sum = 0;
 let count = 0;
 const propArgs1Var = {
@@ -74,9 +75,9 @@ function experiment(truthTable, propArgs) {
   sum = 0;
   count = 0;
   for (count = 0; count < 100; count += 1) {
-    const bestIndividual = evStrategy.evolutionStrategy(rng, truthTable, 9999999, 50, propArgs);
+    const bestIndividual = evStrategy.evolutionStrategy(rng, truthTable, 9999999, 20, propArgs);
     sum += bestIndividual[1];
   }
-  console.log('PROMEDIO DE PASOS PARA HALLAR LA EXPRESION CON MEJOR FITNESS, POBLACION INICIAL DE 50, ESTRATEGIA EVOLUTIVA');
+  console.log('PROMEDIO DE PASOS PARA HALLAR LA EXPRESION CON MEJOR FITNESS, POBLACION INICIAL DE 20, ESTRATEGIA EVOLUTIVA');
   console.log(sum / count);
 }

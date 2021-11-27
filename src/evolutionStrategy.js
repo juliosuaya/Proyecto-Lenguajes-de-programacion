@@ -8,8 +8,10 @@ const { Prop } = require('./props');
 
 class EvolutionStrategy {
   population = [];
+  sumFitness = 0;
 
   bestIndividual = null;
+  worstFitness = 1;
 
   initialPopulation(rng, vars, count, maxHeight, minHeight) {
     for (let x = 0; x < count; x += 1) {
@@ -26,12 +28,15 @@ class EvolutionStrategy {
       if (this.bestIndividual.fitness < individual.fitness) {
         this.bestIndividual = individual;
       }
+      if (this.worstFitness > individual.fitness) {
+        this.worstFitness = individual.fitness;
+      }
     });
   }
 
   selection(rng, count) {
     // suma de todos los fitness
-    const sumFitness = this.population.reduce((sum, individual) => sum + individual.fitness, 0);
+    this.sumFitness = this.population.reduce((sum, individual) => sum + individual.fitness, 0);
     const selected = [];
 
     // eslint-disable-next-line no-param-reassign
@@ -40,7 +45,7 @@ class EvolutionStrategy {
 
       // eslint-disable-next-line no-restricted-syntax
       for (const individual of this.population) {
-        randomProb -= (individual.fitness / sumFitness); 
+        randomProb -= (individual.fitness / this.sumFitness);
         if (randomProb <= 0) {
           selected.push(individual);
           break;
@@ -58,7 +63,7 @@ class EvolutionStrategy {
     if (randomNode === 1) {
       res = Prop.randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
     } else {
-      res = prop;
+      res = prop.clone();
       res.changeNode(rng, [randomNode], 0, propArgs);
     }
     return res;
@@ -79,15 +84,17 @@ class EvolutionStrategy {
     this.assessPopulation(truthTable);
     while ((this.bestIndividual.fitness < 1) && (step < steps)) {
       step += 1;
-      // Esto es para la bitacora.
-      // console.log("Paso actual: " + step);
-      // console.log("Fitness maximo de la poblacion: " + this.bestIndividual.fitness);
-      // console.log("Fitness minimo de la poblacion: " );    FALTA IMPLEMEBTAR
-      // console.log("Fitness promedio de la poblacion: " );  FALTA IMPLEMEBTAR
-      // console.log("Mejor individuo: " + this.bestIndividual);
       this.selection(rng, count);
       this.mutatePopulation(rng, propArgs, count);
       this.assessPopulation(truthTable);
+      // Esto es para la bitacora.
+      if (Prop.bitacora) {
+        console.log("Paso actual: " + step);
+        console.log("Fitness maximo de la poblacion: " + this.bestIndividual.fitness);
+        console.log("Fitness minimo de la poblacion: " + this.worstFitness);
+        console.log("Fitness promedio de la poblacion: " + this.sumFitness / count);
+        console.log("Mejor individuo: " + this.bestIndividual.prop.unparse());
+      }
     }
     return [this.bestIndividual, step];
   }
